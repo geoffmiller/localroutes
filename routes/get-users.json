@@ -1,0 +1,51 @@
+{
+  "data": [
+    {
+      "uuid": "1234abcd",
+      "first_name": "Steve",
+      "last_name": "Jobs",
+      "primary_email": "steve@apple.com",
+      "accounts": [
+        {
+          "uuid": "1234abcd",
+          "name": "Apple",
+          "role": "Admin"
+        },
+        {
+          "uuid": "1234abcd",
+          "name": "Second Account",
+          "role": "Accountant"
+        },
+        {
+          "uuid": "1234abcd",
+          "name": "Third Account",
+          "role": "Financial Broker"
+        }
+      ]
+    },
+    {
+      "uuid": "1234abcd",
+      "first_name": "Second",
+      "last_name": "Person",
+      "primary_email": "foo@example.com",
+      "accounts": [
+        {
+          "uuid": "1234abcd",
+          "name": "Apple",
+          "role": "Accountant"
+        }
+      ]
+    },
+    {
+      "uuid": "1234abcd",
+      "first_name": "Third",
+      "last_name": "Person",
+      "primary_email": "bar@example.com",
+      "accounts": []
+    }
+  ],
+  "meta": {
+    "total_entries": 100,
+    "next": "12234abcd"
+  }
+}

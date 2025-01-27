@@ -1,0 +1,23 @@
+{
+  "name": "localserve",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "bin": {
+    "localserve": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "author": "Geoff Miller",
+  "license": "MIT",
+  "description": "A lightweight local dev server for quickly mocking API endpoints and testing HTTP requests.",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

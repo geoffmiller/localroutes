@@ -2,27 +2,29 @@
 
 ## Alpha status - expect breaking changes
 
-A lightweight development server for quickly mocking API endpoints and testing HTTP requests.
+A dead-simple development server for quickly mocking API endpoints.
 
-![localserve video demo](./localserve-video-demo.webm)
+## Motivation
+
+Sometimes you just need an endpoint to hit while developing locally. Instead of setting up MSW or remembering how Express.js works or using some online service you can now just make a `.json|.js` file and stub out different API scenarios for your current needs then `npx localserve`.
+
+Fast, easy, and probably good enough until you get a real endpoint.
 
 ## Quick Start
 
-1. Create a `/routes` folder in any directory
+1. Create .json or .js files
 
-```bash
-mkdir routes
-cd routes
-```
-
-2. Add .json or .js files in the `/routes` directory
+`get-users-:id-profile.json`
 
 ```js
-// routes/get-users-:id-profile.json
-{ "username": "Test", "age": 42 }
+{ "name": "Douglas Adams", "age": 42 }
+```
 
+or
 
-// routes/put-users-:id.js
+`put-users-:id.js`
+
+```js
 module.exports = (req, res) => {
   res.status(201).json({
     message: `User ${req.param.id} updated`,
@@ -30,7 +32,7 @@ module.exports = (req, res) => {
 };
 ```
 
-3. From the root directory (parent of `/routes`)
+2. From the same directory of your route files
 
 ```bash
 npx localserve [--port=3001] optional port
@@ -50,19 +52,37 @@ PUT http://localhost:3000/users/123
 
 ## Route Configuration
 
-The route files's name is used to contruct the API path.
+The file name is used to construct the API path.
 
-Rules
+### Rules
 
-1. All `-` characters are converted to `/`.
+#### 1. All `-` characters are converted to `/`.
 
-2. The first word of the file name must be an HTTP verb.
+`get-a-b-c.json` -> `GET localhost:3000/a/b/c`
 
-3. An optionial valid HTTP response code can be appended to the end of the file name.
+#### 2. The first word of the file must be an HTTP verb
+
+`get, post, put, patch, delete, options, head` (case insensitive)
+
+#### 3. Path variables must use colons `:`
+
+You can access these in `.js` files like so
+
+`post-a-:foo-b-:bar.js`
 
 ```js
-get-users-:id-profile.json
-GET /users/:id/profile
+module.exports = (req, res) => {
+  const foo = req.param.foo;
+  const bar = req.param.bar;
+  ...
+};
+```
+
+#### 4. An optional valid HTTP response code can be appended to the end of the file name.
+
+```js
+get-users-:id-profile-403.json
+GET /users/:id/profile?status=403
 ```
 
 ```js
@@ -72,19 +92,21 @@ PUT /users/:id/profile?status=500
 
 ### Basic Route Types
 
-- `json`: Returns JSON in the file
+`json`: Returns the JSON in the file
 
 ```json
-// routes/get-user.json
+get-user.json
+
 // must use valid JSON
 { "username": "Test", "age": 42 }
 ```
 
-- `js`: Returns the result of the function in your JS file
+`js`: Returns the result of the function in your JS file
 
 ```javascript
+put-user-:id.js
+
 // Express.js req/res objects are passed into your function
-// routes/put-user-:id.js
 module.exports = (req, res) => {
   res.status(201).json({
     message: `User ${req.param.id} updated`,
@@ -94,7 +116,7 @@ module.exports = (req, res) => {
 
 ### Query Parameters
 
-All endpoints support the following query parameters:
+All endpoints support the following query parameters(can be combined):
 
 | Parameter | Description                                | Example       |
 | --------- | ------------------------------------------ | ------------- |
@@ -106,17 +128,17 @@ All endpoints support the following query parameters:
 Add custom error/status code responses
 
 ```js
-// routes/get-users-:id-profile.json
+// GET /users/:id/profile
+get-users-:id-profile.json
 { "username": "Test", "age": 42 }
 
-// GET /users/:id/profile
 return HTTP 200
 { "username": "Test", "age": 42 }
 
-// routes/get-users-:id-profile-500.json
+// GET /users/:id/profile?status=500
+get-users-:id-profile-500.json
 { "myCustom500message": "oof, 500" }
 
-// GET /users/:id/profile?status=500
 returns HTTP 500
 { "myCustom500message": "oof, 500" }
 
@@ -125,8 +147,8 @@ returns HTTP 500
 If you dont want to create a custom status code file you can just use the `?status=${any valid status code}` query param
 
 ```js
-// GET /users/:id/profile?status=304
-// no /routes/get-users-:id-profile-304.json|js file exists
+// GET /users/:id/profile?status=403
+// no get-users-:id-profile-403.json|js file exists
 return HTTP 403
 {"status": 403 }
 ```
@@ -143,6 +165,22 @@ It includes:
 - Copy-to-clipboard functionality
 
 ![localserve api docs UI](./localserve-api-docs.png)
+
+## Package development
+
+clone/fork this repo and `npm install`
+
+`chmod +x bin/cli.js` then `npm link` to be able to run `npx localserve` on a directory
+
+or
+
+create route files in a `/routes` folder at the root of this project (already .gitignored) and run `node src/index.js` or `npm start`
+
+## Tests
+
+`npm test`
+
+![code test coverage](./coverage.png)
 
 ## License
 

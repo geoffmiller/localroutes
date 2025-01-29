@@ -111,6 +111,29 @@ function routesToHtml(routes) {
     .copy-btn:hover {
       background: #666;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+    thead th {
+      border-bottom: 2px solid #ddd;
+    }
+    .param-name {
+      font-family: monospace;
+      color: #2196f3;
+    }
   </style>
   <script>
     function copyToClipboard(button) {
@@ -127,6 +150,29 @@ function routesToHtml(routes) {
 </head>
 <body>
   <h1>API Routes Documentation</h1>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Query Parameter</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="param-name">status</td>
+        <td>Serve the file appended with <code>-{status}</code> or override the default status code of the response</td>
+        <td><code>?status=404</code></td>
+      </tr>
+      <tr>
+        <td class="param-name">delay</td>
+        <td>Add artificial delay to the response (in milliseconds)</td>
+        <td><code>?delay=2000</code></td>
+      </tr>
+    </tbody>
+  </table>
+
   ${routes.map(generateRouteHtml).join("\n")}
 </body>
 </html>

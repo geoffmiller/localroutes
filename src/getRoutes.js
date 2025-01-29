@@ -14,20 +14,54 @@ const port = 3000; // moved from index.js
 }
 */
 function getRoutes() {
-  const routesDir = path.join(process.cwd(), "routes");
-  if (!fs.existsSync(routesDir)) {
-    console.warn("No /routes directory found in current folder!");
-    console.warn("Please create a /routes directory and add route files.");
-    console.warn("Example: mkdir routes\n");
+  const HTTP_VERBS = [
+    "get",
+    "post",
+    "put",
+    "patch",
+    "delete",
+    "options",
+    "head",
+  ];
+
+  function hasRouteFiles(dir) {
+    const files = fs.readdirSync(dir);
+
+    const validFiles = files.filter((file) => {
+      // Check file extension
+      const hasValidExt = file.endsWith(".js") || file.endsWith(".json");
+
+      // Check starts with HTTP verb
+      const startsWithVerb = HTTP_VERBS.some((verb) =>
+        file.toLowerCase().startsWith(verb + "-")
+      );
+
+      return hasValidExt && startsWithVerb;
+    });
+
+    return validFiles.length > 0 ? validFiles : [];
+  }
+
+  const routesDir = process.cwd();
+
+  const validFiles = hasRouteFiles(routesDir);
+
+  if (validFiles.length < 1) {
+    console.warn("\nNo valid route files found in current directory!");
+    console.warn("\nFiles must:");
+    console.warn(`1. Start with HTTP verb (${HTTP_VERBS.join(", ")})`);
+    console.warn("2. End with .js or .json");
+    console.warn("\nExample valid files:");
+    console.warn("- get-users.json");
+    console.warn("- post-user-500.js");
+    console.warn("- put-user-:id.json\n");
     process.exit(1);
   }
 
   const routes = [];
   const routeGroups = new Map(); // Group routes by base path
 
-  const files = fs.readdirSync(routesDir);
-
-  files.forEach((file) => {
+  validFiles.forEach((file) => {
     const parts = file.split("-");
     const method = parts[0];
 

@@ -3,6 +3,7 @@ node_modules/
 
 # Testing
 coverage/
+routes/
 
 # Environment variables
 .env

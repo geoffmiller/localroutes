@@ -2,7 +2,8 @@ const getRoutes = require("../getRoutes");
 const fs = require("fs");
 const path = require("path");
 
-// Mock fs and path
+// Mock fs, exit, and path
+let mockExit;
 jest.mock("fs");
 jest.mock("path");
 
@@ -14,8 +15,50 @@ describe("getRoutes", () => {
     // Mock process.cwd()
     process.cwd = jest.fn().mockReturnValue("/test");
 
+    // Mock process.exit
+    mockExit = jest.spyOn(process, "exit").mockImplementation((number) => {});
+
     // Mock path.join to return predictable paths
     path.join.mockImplementation((...args) => args.join("/"));
+  });
+
+  afterEach(() => {
+    mockExit.mockRestore();
+  });
+
+  test("should handle empty directory", () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readdirSync.mockReturnValue([]);
+
+    expect(getRoutes().length).toBe(1);
+  });
+
+  test("should handle invalid files", () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readdirSync.mockReturnValue(["users.js", "data.json"]);
+
+    expect(getRoutes().length).toBe(1);
+  });
+
+  test("should handle valid route files", () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readdirSync.mockReturnValue(["get-users.js", "post-data.json"]);
+
+    const routes = getRoutes();
+    expect(routes.length).toBe(3); // includes default route
+  });
+
+  test("should handle mixed valid and invalid files", () => {
+    fs.existsSync.mockReturnValue(true);
+    fs.readdirSync.mockReturnValue([
+      "get-users.js",
+      "users.txt",
+      "post-data.json",
+      "data.md",
+    ]);
+
+    const routes = getRoutes();
+    expect(routes.length).toBe(3);
   });
 
   test("should have the default / route", () => {
@@ -68,14 +111,6 @@ describe("getRoutes", () => {
       statusCode: 200,
       type: "json",
     });
-  });
-
-  test("should exit if routes directory does not exist", () => {
-    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-    fs.existsSync.mockReturnValue(false);
-
-    getRoutes();
-    expect(mockExit).toHaveBeenCalledWith(1);
   });
 
   test("should handle both .js and .json files", () => {

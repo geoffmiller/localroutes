@@ -1,9 +1,9 @@
 {
-  "name": "localserve",
+  "name": "localroutes",
   "version": "0.0.1",
   "main": "src/index.js",
   "bin": {
-    "localserve": "bin/cli.js"
+    "localroutes": "bin/cli.js"
   },
   "files": [
     "src",
@@ -19,7 +19,7 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geoffmiller/localserve.git"
+    "url": "git+https://github.com/geoffmiller/localroutes.git"
   },
   "dependencies": {
     "cors": "^2.8.5",

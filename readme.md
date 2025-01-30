@@ -1,4 +1,4 @@
-# LocalServe
+# LocalRoutes
 
 ## Alpha status - expect breaking changes
 
@@ -6,7 +6,7 @@ A dead-simple development server for quickly mocking API endpoints.
 
 ## Motivation
 
-Sometimes you just need an endpoint to hit while developing locally. Instead of setting up MSW or remembering how Express.js works or using some online service you can now just make a `.json|.js` file and stub out different API scenarios for your current needs then `npx localserve`.
+Sometimes you just need an endpoint to hit while developing locally. Instead of setting up MSW or remembering how Express.js works or using some online service you can now just make a `.json|.js` file and stub out different API scenarios for your current needs then `npx localroutes`.
 
 Fast, easy, and probably good enough until you get a real endpoint.
 
@@ -35,7 +35,7 @@ module.exports = (req, res) => {
 2. From the same directory of your route files
 
 ```bash
-npx localserve [--port=3001] optional port
+npx localroutes [--port=3001] optional port defaults to 3000
 ```
 
 🎉 Now you have routes you can use for local development
@@ -155,7 +155,7 @@ return HTTP 403
 
 ## Documentation UI
 
-LocalServe automatically generates documentation of your routes at the root URL (`http://locahost:3000`).
+LocalRoutes automatically generates documentation for your routes at the root URL (`http://locahost:3000`).
 
 It includes:
 
@@ -164,17 +164,17 @@ It includes:
 - Ready-to-use curl commands
 - Copy-to-clipboard functionality
 
-![localserve api docs UI](./localserve-api-docs.png)
+![localroutes api docs UI](./localroutes-api-docs.png)
 
 ## Package development
 
 clone/fork this repo and `npm install`
 
-`chmod +x bin/cli.js` then `npm link` to be able to run `npx localserve` on a directory
+`chmod +x bin/cli.js` then `npm link` to be able to run `npx localroutes` on a directory
 
 or
 
-create route files in a `/routes` folder at the root of this project (already .gitignored) and run `node src/index.js` or `npm start`
+create route files in a `/routes` (or any name) folder at the root of this project (already .gitignored). `cd routes` and run `node ../src/index.js`.
 
 ## Tests
 
@@ -188,7 +188,7 @@ MIT
 
 ## Todo
 
+- [x] package for npm
 - [ ] add file upload multipart/form-data endpoint mocking
 - [ ] add custom header mocking
 - [ ] add demo video
-- [ ] package for npm

@@ -6,14 +6,12 @@
     "localserve": "bin/cli.js"
   },
   "files": [
-    "dist"
+    "src",
+    "bin"
   ],
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest --bail=0",
-    "clean": "rm -rf dist",
-    "build": "ncc build src/index.js -o dist",
-    "prepublishOnly": "npm run clean && npm run build"
+    "test": "jest --bail=0"
   },
   "author": "Geoff Miller",
   "license": "MIT",
@@ -29,7 +27,6 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.3",
     "jest": "^29.7.0"
   }
 }

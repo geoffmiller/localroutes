@@ -1,4 +1,4 @@
-# LocalRoutes
+# LocalRoutes CLI
 
 ## Alpha status - expect breaking changes
 
@@ -6,7 +6,7 @@ A dead-simple development server for quickly mocking API endpoints.
 
 ## Motivation
 
-Sometimes you just need an endpoint to hit while developing locally. Instead of setting up MSW or remembering how Express.js works or using some online service you can now just make a `.json|.js` file and stub out different API scenarios for your current needs then `npx localroutes`.
+Sometimes you just need an endpoint to hit while developing locally. Instead of setting up MSW or remembering how Express.js works or using some online service you can now just make a `.json|.js` file and stub out different API scenarios for your current needs then `npx localroutes-cli`.
 
 Fast, easy, and probably good enough until you get a real endpoint.
 
@@ -35,7 +35,7 @@ module.exports = (req, res) => {
 2. From the same directory of your route files
 
 ```bash
-npx localroutes [--port=3001] optional port defaults to 3000
+npx localroutes-cli [--port=3001] optional port defaults to 3000
 ```
 
 🎉 Now you have routes you can use for local development
@@ -170,7 +170,7 @@ It includes:
 
 clone/fork this repo and `npm install`
 
-`chmod +x bin/cli.js` then `npm link` to be able to run `npx localroutes` on a directory
+`chmod +x bin/cli.js` then `npm link` to be able to run `npx localroutes-cli` on a directory
 
 or
 

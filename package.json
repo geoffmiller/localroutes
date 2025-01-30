@@ -1,9 +1,9 @@
 {
-  "name": "localroutes",
+  "name": "localroutes-cli",
   "version": "0.0.1",
   "main": "src/index.js",
   "bin": {
-    "localroutes": "bin/cli.js"
+    "localroutes-cli": "bin/cli.js"
   },
   "files": [
     "src",
